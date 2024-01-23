@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sprite tester</title>
+  </head>
+  <body>
+    <canvas width="300" height="300" id="canvas"></canvas>
+    <div>
+      <label for="iRoute">Sprite location:</label><br />
+      <input
+        type="text"
+        id="iRoute"
+        name="iRoute"
+        value="./img/sprite.png"
+      /><br />
+
+      <label for="fWith">Frame width:</label><br />
+      <input type="text" id="fWith" name="fWith" value="100" /><br />
+
+      <label for="fHeight">Frame height:</label><br />
+      <input type="text" id="fHeight" name="fHeight" value="100" /><br />
+
+      <label for="row">Row:</label><br />
+      <input type="text" id="row" name="row" value="1" /><br />
+
+      <label for="nFrames">Number of Frames:</label><br />
+      <input type="text" id="nFrames" name="nFrames" value="1" /><br />
+
+      <label for="fps">FPS:</label><br />
+      <input type="text" id="fps" name="fps" value="30" />
+
+      <button id="edit">EDIT</button>
+      <button id="run">RUN</button>
+    </div>
+    <script>
+      const sprite = document.createElement("img");
+      sprite.src = "";
+
+      let frame = 0;
+      let row = 0;
+      let frameWidth = 0;
+      let frameHeight = 0;
+      let maxFrames = 1;
+      let fps = 30;
+
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      function animate() {
+        ctx.clearRect(0, 0, 300, 300);
+
+        ctx.drawImage(
+          sprite,
+          frameWidth * frame,
+          frameHeight * row,
+          frameWidth,
+          frameHeight,
+          0,
+          0,
+          frameWidth,
+          frameHeight
+        );
+
+        requestAnimationFrame(animate);
+      }
+
+      document.addEventListener("click", (e) => {
+        // console.log(e.target);
+        if (e.target.getAttribute("id") == "edit") {
+          sprite.src = document.getElementById("iRoute").value;
+          frameWidth = +document.getElementById("fWith").value;
+          frameHeight = +document.getElementById("fHeight").value;
+          row = +document.getElementById("row").value;
+          maxFrames = +document.getElementById("nFrames").value;
+          fps = +document.getElementById("fps").value;
+        } else if (e.target.getAttribute("id") == "run") {
+          animate();
+          setInterval(() => {
+            frame++;
+            if (frame >= maxFrames) {
+              frame = 0;
+            }
+          }, 1000 / fps);
+        }
+      });
+    </script>
+  </body>
+</html>
